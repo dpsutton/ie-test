@@ -10,9 +10,10 @@
 (defn app []
   (let [state (r/atom "")]
     (fn []
-      [component #(let [heat (mapv (fn [x] (/ x 3.234234234234)) (range 1e4))
-                        value (.. % -target -value)]
-                    (js/setTimeout (fn [] (reset! state value)) 0))
+      [component #(let [value (.. % -target -value)]
+                    (reset! state value)
+                    (js/setTimeout (fn []
+                                     (let [heat (mapv (fn [x] (/ x 3.234234234234)) (range 1e4))])) 0))
        @state])))
 
 (defn ^:dev/after-load start
