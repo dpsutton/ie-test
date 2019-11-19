@@ -2,11 +2,14 @@
   (:require
    [reagent.core :as r]))
 
+(defn schedule-heat! []
+  (js/setTimeout (fn []
+                   (let [heat (mapv (fn [x] (/ x 3.234234234234)) (range 1e5))])) 0))
+
 (defn component [event state]
   [:input {event #(let [value (.. % -target -value)]
                     (reset! state value)
-                    (js/setTimeout (fn []
-                                     (let [heat (mapv (fn [x] (/ x 3.234234234234)) (range 1e5))])) 0))
+                    (schedule-heat!))
            :value @state
            :style {:width "600px"
                    :height "30px"}}])
@@ -16,7 +19,7 @@
         input (r/atom "")]
     (fn []
       [:div
-       [:pre (pr-str '(mapv (fn [x] (/ x 3.234234234234)) (range 1e5)))]
+       [:pre (pr-str [:the-heat '(mapv (fn [x] (/ x 3.234234234234)) (range 1e5))])]
        [:h1 "on change"]
        [component :on-change change]
        [:h1 "on input"]
